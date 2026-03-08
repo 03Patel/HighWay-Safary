@@ -5,11 +5,9 @@ import Navbar from "../components/Navbar";
 import { AuthContext } from "../reducers/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-<<<<<<< HEAD
-type Experience = {
-=======
+
+
 type Experience= {
->>>>>>> dc8a79e2e7d7a817583381c622997efd9cd41426
   _id: string;
   title: string;
   location: string;
