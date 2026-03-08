@@ -2,15 +2,8 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../reducers/AuthContext";
 import API from "../api/axios";
+import { Experience } from "../types";
 
-type Experience = {
-  _id: string;
-  title: string;
-  image: string;
-  location: string;
-  description: string;
-  price: number;
-};
 
 type Props = {
   experience: Experience;
