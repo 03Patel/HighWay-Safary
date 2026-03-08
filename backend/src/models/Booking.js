@@ -1,18 +1,30 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
+const bookingSchema = new mongoose.Schema({
 
-const BookingSchema = new mongoose.Schema({
-experienceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Experience' },
-name: String,
-email: String,
-phone: String,
-date: String,
-time: String,
-seats: Number,
-amount: Number,
-promoCode: String,
-createdAt: { type: Date, default: Date.now }
-});
+    refId: {
+        type: String,
+        unique: true
+    },
 
+    experienceId: String,
+    title: String,
+    name: String,
+    email: String,
 
-module.exports = mongoose.model('Booking', BookingSchema);
+    date: String,
+    time: String,
+
+    seats: Number,
+    amount: Number,
+
+    promoCode: String,
+
+    status: {
+        type: String,
+        default: "pending"
+    }
+
+}, { timestamps: true });
+
+module.exports = mongoose.model("Booking", bookingSchema);  

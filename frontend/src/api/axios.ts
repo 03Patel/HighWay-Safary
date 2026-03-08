@@ -1,4 +1,12 @@
-import axios from 'axios'
+import axios from "axios";
 
-const API = axios.create({ baseURL:'http://localhost:5000/api' })
-export default API
+const baseURL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://mealmapbackend.onrender.com/api";
+
+const API = axios.create({
+  baseURL,
+});
+
+export default API;

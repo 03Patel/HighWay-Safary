@@ -82,8 +82,8 @@ function Details() {
                     setSelectedTime("");
                   }}
                   className={`px-3 py-1.5 border rounded-md text-sm font-medium ${selectedDate === slot.date
-                      ? "bg-yellow-400 text-black border-yellow-500"
-                      : "bg-white hover:bg-gray-50"
+                    ? "bg-yellow-400 text-black border-yellow-500"
+                    : "bg-white hover:bg-gray-50"
                     }`}
                 >
                   {slot.date}
@@ -102,10 +102,10 @@ function Details() {
                   onClick={() => setSelectedTime(t.time)}
                   disabled={t.booked >= t.capacity}
                   className={`px-3 py-1.5 border rounded-md text-sm font-medium ${t.booked >= t.capacity
-                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                      : selectedTime === t.time
-                        ? "bg-yellow-400 border-yellow-500"
-                        : "bg-white hover:bg-yellow-50"
+                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    : selectedTime === t.time
+                      ? "bg-yellow-400 border-yellow-500"
+                      : "bg-white hover:bg-yellow-50"
                     }`}
                 >
                   {t.time}{" "}
@@ -183,14 +183,14 @@ function Details() {
               booking: { date: selectedDate, time: selectedTime, quantity }
             }
           })}
-        className={`w-full mt-5 py-2 rounded-md font-medium ${selectedTime
+          className={`w-full mt-5 py-2 rounded-md font-medium ${selectedTime
             ? "bg-yellow-400 hover:bg-yellow-500 text-black"
             : "bg-gray-200 text-gray-500 cursor-not-allowed"
-          }`}
+            }`}
         >
-        Confirm
-      </button>
-    </div>
+          Confirm
+        </button>
+      </div>
     </div >
   );
 }

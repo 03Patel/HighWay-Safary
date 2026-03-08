@@ -7,6 +7,8 @@ import Booking from "./pages/Booking";
 import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import AddItem from "./pages/AddItem";
+import BookingList from "./components/BookingList";
+import AdminPage from "./pages/AdminPage"
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
-         <Route path="/AddItem" element={<AddItem/>}/>
+        <Route path="/AddItem" element={<AddItem />} />
+        <Route path="/bookingdetails" element={<BookingList />} />
+        <Route path="/AdminPage/:id" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   );

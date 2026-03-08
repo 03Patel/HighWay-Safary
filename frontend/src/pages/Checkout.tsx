@@ -1,17 +1,18 @@
-import React from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import {motion} from "framer-motion"
-import { CheckCircle2 } from 'lucide-react'
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 
 function Checkout() {
-    const navigate= useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-      const refId = location.state?.refId || `REF-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
+  const refId = location.state?.refId;
 
   return (
-     <div className="flex flex-col justify-center items-center min-h-screen bg-white">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-white">
+
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -36,7 +37,10 @@ function Checkout() {
         transition={{ delay: 0.4 }}
         className="text-gray-500 mb-6"
       >
-        Ref ID: <span className="font-mono text-gray-700">{refId}</span>
+        Ref ID:
+        <span className="font-mono text-gray-700 ml-2">
+          {refId}
+        </span>
       </motion.p>
 
       <motion.button
@@ -47,9 +51,9 @@ function Checkout() {
       >
         Back to Home
       </motion.button>
+
     </div>
-  
-  )
+  );
 }
 
-export default Checkout
+export default Checkout;

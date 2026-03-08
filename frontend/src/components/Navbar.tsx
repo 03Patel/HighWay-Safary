@@ -1,12 +1,12 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../reducers/AuthContext";
 
 function Navbar({ onSearch }: { onSearch: (query: string) => void }) {
   const [query, setQuery] = useState("");
-  
+
   const navigate = useNavigate();
- const { state, dispatch } = useContext(AuthContext);
+  const { state, dispatch } = useContext(AuthContext);
 
   const handleClick = () => {
     dispatch({ type: "LOGOUT" });
@@ -14,7 +14,7 @@ function Navbar({ onSearch }: { onSearch: (query: string) => void }) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
-    if (onSearch) onSearch(value.trim()); // Live search
+    if (onSearch) onSearch(value.trim());
   };
 
 
@@ -37,6 +37,10 @@ function Navbar({ onSearch }: { onSearch: (query: string) => void }) {
           >
             Search
           </button>
+          <Link to="bookingdetails"
+            className="block px-4 py-2 hover:bg-green-500 rounded-xl bg-green-600 transition">
+            Booking
+          </Link>
 
           {!state.isAuthenticated ?
             (<Link
