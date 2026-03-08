@@ -61,9 +61,7 @@ function Card({ experience, onDelete }: Props) {
         </div>
 
         <p className="text-sm text-gray-600 mb-4">
-          {experience.description.length > 80
-            ? experience.description.slice(0, 80) + "..."
-            : experience.description}
+          {(experience.description ?? "No description available").slice(0, 80)}
         </p>
 
         <div className="flex items-center justify-between">
