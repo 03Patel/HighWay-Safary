@@ -4,42 +4,47 @@ const Booking = require('../models/Booking');
 const Experience = require('../models/Experience');
 const sendBookingEmail = require("../utils/sendBookingEmail");
 
-
 router.post('/', async (req, res) => {
+    try {
 
-    const { experienceId, refId, name, email, date, time, seats, promoCode, status, title } = req.body;
-    console.log(req.body)
+        const { experienceId, refId, name, email, date, time, seats, promoCode, status, title } = req.body;
 
-    const exp = await Experience.findById(experienceId);
-    if (!exp) return res.status(404).json({ message: 'Experience not found' });
+        console.log("Booking Data:", req.body);
 
-    const slot = exp.slots.find(s => s.date === date);
-    const timeSlot = slot.times.find(t => t.time === time);
+        const exp = await Experience.findById(experienceId);
 
-    if (timeSlot.booked + seats > timeSlot.capacity)
-        return res.status(409).json({ message: 'Not enough seats' });
+        if (!exp) {
+            return res.status(404).json({ message: 'Experience not found' });
+        }
 
-    timeSlot.booked += seats;
-    await exp.save();
+        // calculate amount
+        const amount = exp.price * seats;
 
-    const amount = exp.price * seats;
+        const booking = await Booking.create({
+            experienceId,
+            refId,
+            title,
+            name,
+            email,
+            date,
+            time,
+            seats,
+            amount,
+            promoCode,
+            status
+        });
 
-    const booking = await Booking.create({
-        experienceId,
-        refId,
-        title,
-        name,
-        email,
-        date,
-        time,
-        seats,
-        amount,
-        promoCode,
-        status
-    });
+        res.json({
+            success: true,
+            booking
+        });
 
-    res.json({ success: true, booking });
+    } catch (error) {
 
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+
+    }
 });
 
 

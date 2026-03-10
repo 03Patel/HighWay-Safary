@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../reducers/AuthContext";
 import API from "../api/axios";
 import { Experience } from "../types";
-
+import { MapPin, Trash2 } from "lucide-react";
 
 type Props = {
   experience: Experience;
@@ -40,69 +40,85 @@ function Card({ experience, onDelete }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
 
-      <img
-        src={experience.image}
-        alt={experience.title}
-        className="w-full h-48 object-cover"
-      />
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 group">
 
-      <div className="p-4">
+      {/* Image */}
+      <div className="relative overflow-hidden">
 
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold text-gray-800">
-            {experience.title}
-          </h3>
+        <img
+          src={experience.image}
+          alt={experience.title}
+          className="w-full h-52 object-cover group-hover:scale-110 transition duration-500"
+        />
 
-          <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-md">
-            {experience.location}
-          </span>
-        </div>
-
-        <p className="text-sm text-gray-600 mb-4">
-          {(experience.description ?? "No description available").slice(0, 80)}
-        </p>
-
-        <div className="flex items-center justify-between">
-
-          <p className="text-sm text-gray-700">
-            From ₹{" "}
-            <span className="text-lg font-bold text-gray-900">
-              {experience.price}
-            </span>
-          </p>
-
-          <div className="flex gap-2">
-            {!state.isAuthenticated ?
-              <button
-                onClick={() => navigate(`/details/${experience._id}`)}
-                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium px-4 py-2 rounded-md"
-              >
-                View
-              </button> :
-              <button
-                onClick={() => navigate(`/AdminPage/${experience._id}`)}
-                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium px-4 py-2 rounded-md"
-              >
-                View
-              </button>
-            }
-
-            {state.isAuthenticated ?
-              <button
-                onClick={handleDelete}
-                className="bg-red-500 hover:bg-red-400 text-white text-sm font-medium px-4 py-2 rounded-md"
-              >
-                Delete
-              </button>
-              : ""}
-
-          </div>
+        {/* Price badge */}
+        <div className="absolute top-3 right-3 bg-white text-gray-800 text-sm font-semibold px-3 py-1 rounded-full shadow">
+          ₹{experience.price}
         </div>
 
       </div>
+
+
+      {/* Content */}
+      <div className="p-5 space-y-3">
+
+        <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+          {experience.title}
+        </h3>
+
+        <div className="flex items-center text-sm text-gray-500 gap-1">
+
+          <MapPin size={16} />
+
+          <span>{experience.location}</span>
+
+        </div>
+
+        <p className="text-sm text-gray-600 line-clamp-2">
+          {(experience.description ?? "No description available")}
+        </p>
+
+        {/* Buttons */}
+        <div className="flex items-center justify-between pt-2">
+
+          {!state.isAuthenticated ? (
+
+            <button
+              onClick={() => navigate(`/details/${experience._id}`)}
+              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium px-4 py-2 rounded-lg transition"
+            >
+              View Details
+            </button>
+
+          ) : (
+
+            <button
+              onClick={() => navigate(`/details/${experience._id}`)}
+              className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+            >
+              Manage
+            </button>
+
+          )}
+
+          {state.isAuthenticated && role === "admin" && (
+
+            <button
+              onClick={handleDelete}
+              className="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white w-9 h-9 rounded-lg transition"
+            >
+              <Trash2 size={16} />
+            </button>
+
+          )}
+
+        </div>
+
+      </div>
+
     </div>
+
   );
 }
 

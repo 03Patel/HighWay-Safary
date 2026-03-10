@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../reducers/AuthContext";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -36,80 +37,91 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex">
+        <div className="min-h-screen flex bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600">
 
-
-            <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 text-white items-center justify-center flex-col p-10">
-                <h1 className="text-4xl font-bold mb-4">Admin Dashboard</h1>
-                <p className="text-lg opacity-90 text-center max-w-md">
-                    Manage your experiences, bookings and users easily from the admin panel.
+            {/* Left Panel */}
+            <div className="hidden md:flex w-1/2 text-white items-center justify-center flex-col p-12">
+                <h1 className="text-5xl font-bold mb-4">Highway Safary</h1>
+                <p className="text-lg opacity-90 max-w-md text-center">
+                    Admin dashboard to manage bookings, experiences and users easily.
                 </p>
             </div>
 
-
-            <div className="flex w-full md:w-1/2 items-center justify-center bg-gray-100 p-6">
-                <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+            {/* Login Card */}
+            <div className="flex w-full md:w-1/2 items-center justify-center p-6">
+                <div className="w-full max-w-md backdrop-blur-lg bg-white/90 rounded-2xl shadow-2xl p-8">
 
                     <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                         Admin Login
                     </h2>
 
                     {error && (
-                        <p className="text-red-500 text-center mb-4 text-sm">{error}</p>
+                        <div className="bg-red-100 text-red-600 text-sm p-3 rounded-lg mb-4 text-center">
+                            {error}
+                        </div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-5">
 
-
+                        {/* Email */}
                         <div>
                             <label className="text-sm text-gray-600">Email</label>
-                            <input
-                                type="email"
-                                required
-                                placeholder="Enter your email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                            />
+
+                            <div className="flex items-center border rounded-lg mt-1 px-3 py-2 focus-within:ring-2 focus-within:ring-indigo-500">
+                                <Mail size={18} className="text-gray-400 mr-2" />
+                                <input
+                                    type="email"
+                                    required
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full outline-none text-sm"
+                                />
+                            </div>
                         </div>
 
-
+                        {/* Password */}
                         <div>
                             <label className="text-sm text-gray-600">Password</label>
-                            <div className="relative">
+
+                            <div className="flex items-center border rounded-lg mt-1 px-3 py-2 focus-within:ring-2 focus-within:ring-indigo-500">
+                                <Lock size={18} className="text-gray-400 mr-2" />
+
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     required
                                     placeholder="Enter your password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                    className="w-full outline-none text-sm"
                                 />
 
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-3 text-sm text-gray-500"
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
-                                    {showPassword ? "Hide" : "Show"}
+                                    {showPassword ? (
+                                        <EyeOff size={18} className="text-gray-500" />
+                                    ) : (
+                                        <Eye size={18} className="text-gray-500" />
+                                    )}
                                 </button>
                             </div>
                         </div>
 
-
+                        {/* Login Button */}
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition"
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition flex justify-center items-center"
                         >
                             {loading ? "Logging in..." : "Login"}
                         </button>
 
                     </form>
 
-
-                    <p className="text-center text-sm text-gray-500 mt-6">
-                        Admin Panel Access Only
+                    <p className="text-center text-xs text-gray-400 mt-6">
+                        Admin access only
                     </p>
 
                 </div>
