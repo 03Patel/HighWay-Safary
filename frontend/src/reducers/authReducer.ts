@@ -5,7 +5,7 @@ export interface AuthState {
 
 export interface LoginAction {
   type: "LOGIN";
-  payload: { id: string; email: string; role: "user" | "admin" };
+  payload: { id: string; email: string; role: "user" | "admin"; token?: string };
 }
 
 export interface LogoutAction {
@@ -32,10 +32,17 @@ export const authReducer = (
 ): AuthState => {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("token", action.payload.id);
+      if (action.payload.token) {
+        localStorage.setItem("token", action.payload.token);
+      }
       localStorage.setItem("role", action.payload.role);
       localStorage.setItem("email", action.payload.email);
-      return { ...state, isAuthenticated: true, user: action.payload };
+      localStorage.setItem("userId", action.payload.id);
+      return { 
+        ...state, 
+        isAuthenticated: true, 
+        user: { id: action.payload.id, email: action.payload.email, role: action.payload.role } 
+      };
 
     case "LOGOUT":
       localStorage.removeItem("token");

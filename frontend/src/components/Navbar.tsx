@@ -87,12 +87,6 @@ function Navbar() {
                 Sign Up
               </Link>
 
-              <Link
-                to="/login"
-                className="px-4 py-2 bg-blue-600 text-white rounded text-sm font-semibold"
-              >
-                Admin
-              </Link>
             </>
           )}
 

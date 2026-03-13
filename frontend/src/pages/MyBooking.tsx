@@ -7,6 +7,9 @@ type Booking = {
     name: string;
     status: string;
     image?: string;
+    title: string;
+    date: string;
+    time: string;
 };
 
 function MyBookings() {
@@ -18,7 +21,6 @@ function MyBookings() {
             try {
                 const userId = localStorage.getItem("userId");
 
-                console.log("UserId:", userId);
 
                 if (!userId) {
                     console.log("UserId not found in localStorage");
@@ -28,7 +30,7 @@ function MyBookings() {
 
                 const res = await API.get(`/bookings/user/${userId}`);
 
-                console.log("API Response:", res.data);
+
 
                 setBookings(res.data);
             } catch (err) {
