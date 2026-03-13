@@ -27,7 +27,15 @@ function SignIn() {
             localStorage.setItem("userId", res.data.user.userId)
 
             // Update context
-            dispatch({ type: "LOGIN", payload: { token, role: user.role } });
+            dispatch({
+                type: "LOGIN",
+                payload: {
+                    id: res.data.id,
+                    email: res.data.email,
+                    role: res.data.role,
+                    token: res.data.token
+                }
+            });
 
             navigate("/");
 
