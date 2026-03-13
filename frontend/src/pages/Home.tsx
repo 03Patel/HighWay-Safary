@@ -58,26 +58,11 @@ function Home() {
 
   };
 
-  const handleSearch = (query: string) => {
 
-    if (!query) {
-      setFiltered(list);
-      return;
-    }
-
-    const result = list.filter(
-      (exp) =>
-        exp.title?.toLowerCase().includes(query.toLowerCase()) ||
-        exp.location?.toLowerCase().includes(query.toLowerCase())
-    );
-
-    setFiltered(result);
-
-  };
 
   return (
     <>
-      <Navbar onSearch={handleSearch} />
+      <Navbar  />
 
       <div className="p-6 max-w-6xl mx-auto">
 
