@@ -4,9 +4,14 @@ const adminSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    role: {
+      type: String,
+      default: "admin"
+    }
   },
   {
-    collation: { locale: "en", strength: 2 } }
+    collation: { locale: "en", strength: 2 }
+  }
 );
 
 module.exports = mongoose.model("Admin", adminSchema);

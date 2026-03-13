@@ -40,7 +40,7 @@ function Details() {
   const [loading, setLoading] = useState(true);
 
   const { state } = useContext(AuthContext);
-
+  const role = localStorage.getItem("role")
   useEffect(() => {
 
     if (!id) return;
@@ -147,26 +147,32 @@ function Details() {
 
     }
 
-    if (state.isAuthenticated) {
 
-      navigate(`/AdminPage/${experience._id}`);
+
+    if (state.isAuthenticated) {
+      if (role === "admin") {
+        navigate(`/AdminPage/${experience._id}`);
+      } else {
+        navigate("/booking", {
+          state: {
+            experience,
+            booking: {
+              date: selectedDate,
+              time: selectedTime,
+              quantity,
+            },
+          },
+        });
+
+      }
 
     } else {
-
-      navigate("/booking", {
-        state: {
-          experience,
-          booking: {
-            date: selectedDate,
-            time: selectedTime,
-            quantity,
-          },
-        },
-      });
-
+      alert("Please SignUp or SignIN your account")
+      navigate("/signin")
     }
 
-  };
+  }
+    ;
 
   return (
     <div className="bg-gray-100 min-h-screen py-10">
@@ -370,7 +376,8 @@ function Details() {
               }`}
           >
 
-            {state.isAuthenticated ? "Edit Booking" : "Confirm Booking"}
+            {state.isAuthenticated && role === "user" && (
+              "Confirm Booking")}
 
           </button>
 

@@ -1,74 +1,179 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../reducers/AuthContext";
-import { Search, LogOut, User } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 
-function Navbar({ onSearch }: { onSearch: (query: string) => void }) {
-  const [query, setQuery] = useState("");
+function Navbar() {
+
+  const [open, setOpen] = useState(false);
   const { state, dispatch } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
-  };
+  const role = localStorage.getItem("role");
+  const userId = localStorage.getItem("userId");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
-    if (onSearch) onSearch(value.trim());
+
+
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
   };
 
   return (
-    <nav className="w-full bg-white shadow-md border-b">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+    <nav className="w-full bg-white border-b shadow-sm">
 
-        {/* Logo */}
-        <h1 className="text-xl font-bold text-gray-800 tracking-wide">
-          🚗 Highway <span className="text-yellow-500">Safary</span>
-        </h1>
+      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
 
-        {/* Search Bar */}
-        <div className="flex items-center bg-gray-100 rounded-full px-3 py-1 w-80 focus-within:ring-2 focus-within:ring-yellow-400">
-          <Search size={18} className="text-gray-500 mr-2" />
-          <input
-            type="text"
-            value={query}
-            onChange={handleChange}
-            placeholder="Search experiences..."
-            className="bg-transparent w-full outline-none text-sm"
-          />
-        </div>
+        <h1 className="text-lg font-semibold">Highway Safary</h1>
 
-        {/* Menu */}
-        <div className="flex items-center space-x-4">
+        <div className="hidden md:flex items-center gap-4">
 
-          <Link
-            to="/bookingdetails"
-            className="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-medium hover:bg-green-600 transition"
-          >
-            My Bookings
-          </Link>
+          {/* USER NAVBAR */}
+          {state.isAuthenticated && role === "user" && (
+            <>
+              <Link
+                to="/mybookings"
+                className="px-4 py-2 bg-white-400 border-2 rounded text-sm font-semibold hover:bg-black hover:text-white"
+              >
+                My Bookings
+              </Link>
 
-          {!state.isAuthenticated ? (
-            <Link
-              to="/login"
-              className="flex items-center gap-1 px-4 py-2 bg-yellow-400 text-gray-900 rounded-full text-sm font-medium hover:bg-yellow-500 transition"
-            >
-              <User size={16} />
-              Admin
-            </Link>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1 px-4 py-2 bg-red-500 text-white rounded-full text-sm font-medium hover:bg-red-600 transition"
-            >
-              <LogOut size={16} />
-              Logout
-            </button>
+              <button
+                onClick={logout}
+                className="flex items-center gap-1 px-4 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600 hover:text-white"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            </>
           )}
+
+          {/* ADMIN NAVBAR */}
+          {state.isAuthenticated && role === "admin" && (
+            <>
+
+
+              <Link
+                to="/bookingdetails"
+                className="px-4 py-2 bg-white-400 border-2 rounded text-sm font-semibold hover:bg-black hover:text-white"
+              >
+                Bookings
+              </Link>
+
+              <button
+                onClick={logout}
+                className="flex items-center gap-1 px-4 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600 hover:text-white"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            </>
+          )}
+
+          {/* GUEST NAVBAR */}
+          {!state.isAuthenticated && (
+            <>
+              <Link
+                to="/signin"
+                className="px-4 py-2 bg-white-400 border-2 rounded text-sm font-semibold hover:bg-black hover:text-white"
+              >
+                Sign In
+              </Link>
+
+              <Link
+                to="/signup"
+                className="px-4 py-2 bg-gray-800 text-white  rounded text-sm  hover:bg-white hover:text-black hover:border-2 hover:font-semibold"
+              >
+                Sign Up
+              </Link>
+
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-blue-600 text-white rounded text-sm font-semibold"
+              >
+                Admin
+              </Link>
+            </>
+          )}
+
+        </div>
+        {/* MOBILE SIDEBAR */}
+
+
+        <div className="relative md:hidden">
+
+          {/* TOP BAR */}
+
+          <div className="bg-[#333] text-white flex justify-end px-4 py-3 h-10">
+            <button onClick={() => setOpen(!open)}>
+              {!open ? <Menu size={20} /> : ""}
+
+            </button>
+          </div>
+
+
+          <div
+            className={`fixed top-0 right-0 h-full w-[30%] bg-[#333] text-white z-50
+                         transform transition-transform duration-300
+                    ${open ? "translate-x-0" : "translate-x-full"}`}
+
+          >
+            <div className="bg-[#333] text-white flex justify-end px-4 py-3">
+              <button onClick={() => setOpen(!open)}>
+                {open ? <X size={24} /> : ""}
+
+              </button>
+            </div>
+
+            <div className="flex flex-col mt-14   gap-2">
+              {!state.isAuthenticated && (
+                <>
+                  <Link
+                    to="/signup"
+                    className="px-4 py-2 bg-gray-800 text-white  item-center rounded text-sm  hover:bg-white hover:text-black hover:border-2 hover:font-semibold w-50%"
+
+                  >
+                    Sign UP
+                  </Link>
+
+                  <Link
+                    to="/signin"
+                    className="px-4 py-2 bg-white-400 border-2 rounded text-sm font-semibold hover:bg-black hover:text-white"
+
+                  >
+                    Sign In
+                  </Link>
+                </>
+              )}
+              {state.isAuthenticated && role === "user" && (
+                <>
+                  <Link
+                    to="/mybookings"
+                    className="px-4 py-2 bg-white-400 border-2 rounded text-sm font-semibold hover:bg-black hover:text-white"
+                  >
+                    My Bookings
+                  </Link>
+
+                  <button
+                    onClick={logout}
+                    className="flex items-center gap-1 px-4 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600 hover:text-white"
+                  >
+                    <LogOut size={16} />
+                    Logout
+                  </button>
+                </>
+              )}
+
+
+
+            </div>
+          </div>
+
         </div>
 
       </div>
-    </nav>
+
+    </nav >
   );
 }
 

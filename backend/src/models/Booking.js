@@ -9,9 +9,13 @@ const bookingSchema = new mongoose.Schema({
 
     experienceId: String,
     title: String,
+    image: String,
     name: String,
     email: String,
-
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
     date: String,
     time: String,
 

@@ -7,7 +7,7 @@ const sendBookingEmail = require("../utils/sendBookingEmail");
 router.post('/', async (req, res) => {
     try {
 
-        const { experienceId, refId, name, email, date, time, seats, promoCode, status, title } = req.body;
+        const { experienceId, refId, userId, image, name, email, date, time, seats, promoCode, status, title } = req.body;
 
         console.log("Booking Data:", req.body);
 
@@ -22,9 +22,11 @@ router.post('/', async (req, res) => {
 
         const booking = await Booking.create({
             experienceId,
+            userId,
             refId,
             title,
             name,
+            image,
             email,
             date,
             time,
@@ -145,6 +147,28 @@ router.put("/update-status/:id", async (req, res) => {
     }
 
 });
+router.get('/:id', async (req, res) => {
+    const item = await Experience.findById(req.params.id);
+    if (!item) return res.status(404).json({ message: 'Not found' });
+    res.json(item);
+});
 
+router.get("/user/:userId", async (req, res) => {
+    try {
+
+        console.log("UserId received:", req.params.userId);
+
+        const bookings = await Booking.find({
+            userId: req.params.userId
+        });
+
+        console.log("Bookings found:", bookings);
+
+        res.json(bookings);
+
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
 
 module.exports = router;

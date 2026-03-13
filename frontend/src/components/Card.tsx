@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../reducers/AuthContext";
@@ -11,115 +12,92 @@ type Props = {
 };
 
 function Card({ experience, onDelete }: Props) {
-
   const navigate = useNavigate();
   const { state } = useContext(AuthContext);
 
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  const handleDelete = async () => {
-    try {
+  const isAdmin = state.isAuthenticated && role === "admin";
 
+  const handleDelete = async () => {
+    if (!experience._id) return;
+
+    const confirmDelete = window.confirm("Delete this experience?");
+    if (!confirmDelete) return;
+
+    try {
       await API.delete(`/experiences/${experience._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` }
       });
 
-      alert("Item deleted successfully");
-
       onDelete(experience._id);
-
-    } catch (error) {
-
-      console.error("Delete failed:", error);
-      alert("Failed to delete experience");
-
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("Could not delete item");
     }
   };
 
+  const openDetails = () => {
+    navigate(`/details/${experience._id}`);
+  };
+
   return (
+    <div className="bg-white rounded-xl shadow-sm border hover:shadow-lg transition overflow-hidden">
 
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 group">
-
-      {/* Image */}
-      <div className="relative overflow-hidden">
-
+      <div className="relative">
         <img
           src={experience.image}
           alt={experience.title}
-          className="w-full h-52 object-cover group-hover:scale-110 transition duration-500"
+          className="w-full h-52 "
         />
 
-        {/* Price badge */}
-        <div className="absolute top-3 right-3 bg-white text-gray-800 text-sm font-semibold px-3 py-1 rounded-full shadow">
+        <span className="absolute top-3 right-3 bg-white text-sm font-medium px-3 py-1 rounded-full shadow">
           ₹{experience.price}
-        </div>
-
+        </span>
       </div>
 
+      <div className="p-4">
 
-      {/* Content */}
-      <div className="p-5 space-y-3">
-
-        <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+        <h3 className="text-lg font-semibold text-gray-800 truncate">
           {experience.title}
         </h3>
 
-        <div className="flex items-center text-sm text-gray-500 gap-1">
-
-          <MapPin size={16} />
-
-          <span>{experience.location}</span>
-
+        <div className="flex items-center text-gray-500 text-sm mt-1 gap-1">
+          <MapPin size={15} />
+          {experience.location}
         </div>
 
-        <p className="text-sm text-gray-600 line-clamp-2">
-          {(experience.description ?? "No description available")}
+        <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+          {experience.description || "No description available"}
         </p>
 
-        {/* Buttons */}
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between mt-4">
 
-          {!state.isAuthenticated ? (
+          <button
+            onClick={openDetails}
+            className={`px-4 py-2 text-sm rounded-lg font-medium transition ${state.isAuthenticated
+              ? "bg-indigo-500 hover:bg-indigo-600 text-white"
+              : "bg-yellow-400 hover:bg-yellow-500 text-gray-900"
+              }`}
+          >
+            {state.isAuthenticated && role === "admin" ? "Manage" : "View Details"}
+          </button>
 
-            <button
-              onClick={() => navigate(`/details/${experience._id}`)}
-              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-sm font-medium px-4 py-2 rounded-lg transition"
-            >
-              View Details
-            </button>
-
-          ) : (
-
-            <button
-              onClick={() => navigate(`/details/${experience._id}`)}
-              className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
-            >
-              Manage
-            </button>
-
-          )}
-
-          {state.isAuthenticated && role === "admin" && (
-
+          {isAdmin && (
             <button
               onClick={handleDelete}
-              className="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white w-9 h-9 rounded-lg transition"
+              className="flex items-center justify-center w-9 h-9 bg-red-500 hover:bg-red-600 text-white rounded-lg"
             >
               <Trash2 size={16} />
             </button>
-
           )}
 
         </div>
-
       </div>
-
     </div>
-
   );
 }
 
 export default Card;
+
