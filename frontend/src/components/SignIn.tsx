@@ -21,20 +21,13 @@ function SignIn() {
 
             // Store token and role in localStorage
             localStorage.setItem("token", token);
-            localStorage.setItem("role", user.role);
-            localStorage.setItem("userId", user.id || user.userId);
+            localStorage.setItem("role", user.role)
+            localStorage.setItem("userId", user.id);
             localStorage.setItem("email", user.email);
+            localStorage.setItem("userId", res.data.user.userId)
 
             // Update context
-            dispatch({ 
-                type: "LOGIN", 
-                payload: { 
-                    id: user.id || user.userId, 
-                    email: user.email, 
-                    role: user.role, 
-                    token 
-                } 
-            });
+            dispatch({ type: "LOGIN", payload: { token, role: user.role } });
 
             navigate("/");
 
