@@ -26,9 +26,7 @@ export default function AboutSection() {
                     </h1>
 
                     <p className="text-gray-600">
-                        Since 2014, we’ve helped thousands of travelers explore amazing
-                        destinations. Whether it’s a one-day trip or a long vacation,
-                        we make every journey unforgettable.
+                        Since 2025, we’ve been helping travelers explore breathtaking destinations. From day trips to longer vacations, we make sure every journey is enjoyable and unforgettable.
                     </p>
 
                     {/* Features */}
